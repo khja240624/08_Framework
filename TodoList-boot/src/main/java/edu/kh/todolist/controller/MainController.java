@@ -11,12 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import edu.kh.todolist.dto.Todo;
 import edu.kh.todolist.service.TodoListService;
 
+// Controller : 요청/응답 제어
 @Controller // Controller임을 명시 + Bean 등록
 public class MainController {
 	
-	@Autowired // 의존성 주입(DI)
+	@Autowired // 등록된 Bean 중에서 같은 자료형 객체를 의존성 주입(DI)
 	private TodoListService service;
 	
+	/** 메인 페이지
+	 * @param model 데이터 전달용 객체(request scope)
+	 * @return
+	 */
 	@RequestMapping("/") // 최상위 주소 매핑(GET, POST 가리지 않음)
 	public String mainPage(Model model) {
 		
