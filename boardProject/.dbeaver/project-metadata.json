@@ -1,1 +1,1 @@
-{"resources":{"SQL모음.sql":{"default-datasource":"oracle_thin-191dea6076f-2c5c7953e8eca400","default-schema":"SPRING_BDH"}}}
+{"resources":{"SQL모음.sql":{"default-schema":"SPRING_BDH","default-datasource":"oracle_thin-191dea6076f-2c5c7953e8eca400"}}}
