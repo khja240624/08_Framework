@@ -109,3 +109,13 @@ VALUES(
 
 COMMIT;
 
+-- 모든 회원 탈퇴 복구
+UPDATE 
+	"MEMBER"
+SET
+	MEMBER_DEL_FL = 'N';
+
+COMMIT;
+
+
+
