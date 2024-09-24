@@ -11,11 +11,30 @@ import edu.kh.project.member.dto.Member;
 @Mapper
 public interface MemberMapper {
 
-	/** memberEmail일 일치하는 회원 정보 조회
+	/** memberEmail 일치하는 회원 정보 조회
 	 * @param memberEmail
 	 * @return loginMember 또는 null
 	 */
 	Member login(String memberEmail);
+
+	/** 회원 가입
+	 * @param inputMember
+	 * @return resert
+	 */
+	int signUp(Member inputMember);
+
+	
+	/** 이메일 중복 검사
+	 * @param email
+	 * @return count
+	 */
+	int emailCheck(String email);
+
+	/** 닉네임 중복 검사
+	 * @param nickname
+	 * @return count
+	 */
+	int nicknameCheck(String nickname);
 
 }
 

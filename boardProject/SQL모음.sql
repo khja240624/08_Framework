@@ -119,3 +119,11 @@ COMMIT;
 
 
 
+
+-- 이메일 중복 검사(탈퇴 안한 회원 중 중복 확인)
+SELECT COUNT(*)
+FROM "MEMBER"
+WHERE MEMBER_EMAIL = 'member033@kh.or.kr'
+AND   MEMBER_DEL_FL = 'N';
+
+
