@@ -523,7 +523,78 @@ COMMIT;
 SELECT COUNT(*)
   	FROM "BOARD"
   	WHERE BOARD_CODE = 3
-  	AND BOARD_DEL_FL = 'N'
+  	AND BOARD_DEL_FL = 'N';
+
+
+SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL;
+
+
+
+-- ---------------------------------------------------------
+
+-- 이미지 번호 생성용 시퀀스
+CREATE SEQUENCE SEQ_IMG_NO NOCACHE;
+
+/* 여러 행을 한 번에 INSERT 하는 방법 
+ * 
+ * 1. INSERT ALL 구문
+ * 2. INSERT + SUBQUERY (사용!)
+ * 
+ * [문제점] 위에 두 방법 다 SEQUENCE를 직접 사용 불가!!
+ * */
+
+
+-- SEQ_IMG_NO 시퀀스의 다음 값을 반환하는 함수 생성
+CREATE OR REPLACE FUNCTION NEXT_IMG_NO
+
+-- 반환형
+RETURN NUMBER
+
+-- 사용할 변수
+IS IMG_NO NUMBER;
+
+BEGIN 
+	SELECT SEQ_IMG_NO.NEXTVAL 
+	INTO IMG_NO
+	FROM DUAL;
+
+	RETURN IMG_NO;
+END;
+;
+
+
+
+
+
+
+INSERT INTO "BOARD_IMG"
+(
+	SELECT NEXT_IMG_NO(),
+		'/images/board/', '원본명','변경명',1,2000
+	FROM DUAL
+	
+	UNION ALL
+	
+	SELECT NEXT_IMG_NO(),
+		'/images/board/', '원본명','변경명',1,2000
+	FROM DUAL
+	
+	UNION ALL
+	
+	SELECT NEXT_IMG_NO(),
+		'/images/board/', '원본명','변경명',1,2000
+	FROM DUAL
+);
+
+ROLLBACK;
+
+SELECT * FROM "BOARD"
+ORDER BY BOARD_NO DESC;
+
+
+SELECT * FROM "BOARD_IMG";
+
+COMMIT;
 
 
 
