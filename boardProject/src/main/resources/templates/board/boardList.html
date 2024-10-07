@@ -62,6 +62,9 @@
 
                 <td>
                   <!-- 썸네일 추가 예정 -->
+                  <img th:if="*{thumbnail}"
+                       th:src="*{thumbnail}" 
+                       class = "list-thumbnail">
   
                   <!-- 상세조회 요청 주소 /board/{boardCode}/{boardNo} -->
                   
