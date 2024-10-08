@@ -71,18 +71,14 @@
 
 </header>
 
-
 <!-- navigator -->
 <nav>
   <ul>
-    <li>
-      <a href="/board/1">공지사항</a>
-    </li>
-    <li>
-      <a href="/board/2">자유 게시판</a>
-    </li>
-    <li>
-      <a href="/board/3">정보 게시판</a>
+    <li th:each="boardType : ${application.boardTypeList}">
+      <a th:href="@{/board/{boardCode} (boardCode = ${boardType.boardCode})}"
+         th:text="${boardType.boardName}"
+         th:classappend="${boardType.boardName} == ${boardName} ? current-board : ''"
+         >게시판 이름</a>
     </li>
 
     <li>

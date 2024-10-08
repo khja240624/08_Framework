@@ -732,6 +732,17 @@ ORDER SIBLINGS BY COMMENT_NO
 
 
 
+INSERT INTO "BOARD_TYPE"
+VALUES(4, '테스트');
+
+COMMIT;
+
+
+
+
+
+
+
 
 
 
