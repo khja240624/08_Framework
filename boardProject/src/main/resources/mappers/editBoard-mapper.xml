@@ -1,101 +1,146 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="edu.kh.project.board.mapper.EditBoardMapper">
-  
-  	<!-- 
-  		시퀀스를 이용해서 다음 boardNo를 생성한 후
-  		제출된 Board 객체에 boardNo를 세팅!!!
-  		
-  		왜? 동시에 시퀀스로 번호를 발생 시킬 가능성이 있기 때문에
-  		    미리 번호를 생성
-  		    
-  		방법 : 얕은 복사의 특징(모두 원본 참조) 이용해서
-  			   mapper에서 세팅한 값을 
-  			   controller, service에서 사용 가능하게함
-  	 -->
-  
-  
-  	<!--  
-  		useGeneratedKeys 속성
-  		- DB에서 내부적으로 생성된 KEY(시퀀스)를
-  		  사용할 수 있는 상태 여부 지정
-  		  -> 전달 받은 파라미터 객체의 필드에 대입 가능
-  		  
-  		  
-  		** 동적 SQL **
-		- 프로그램 수행 중 SQL을 변경하는 기능 (마이바티스의 가장 강력한 기능)
-		
-		<selectKey> 태그 : INSERT/UPDATE 시 사용할 키(시퀀스)를
-						조회해서 파라미터의 지정된 필드에 대입
-		
-		order 속성 : 메인 SQL이 수행되기 전/후에 selectkey가 수행되도록 지정
-		전 : BEFORE
-		후 : AFTER
-		
-		keyProperty 속성 : selectKey 조회 결과를 저장할 파라미터의 필드  
-  	-->
-  
-  	<!-- 게시글 부분 (제목, 내용, 작성자, 게시판 종류) INSERT -->
-	<insert id="boardInsert" 
-			parameterType="Board" 
-			useGeneratedKeys="true">
-	
-		<selectKey order="BEFORE"
-				   resultType="_int"
-				   keyProperty="boardNo">
+
+	<!-- 시퀀스를 이용해서 다음 boardNo를 생성한 후 제출된 Board 객체에 boardNo를 세팅!!! 왜? 동시에 시퀀스로 
+		번호를 발생 시킬 가능성이 있기 때문에 미리 번호를 생성 방법 : 얕은 복사의 특징(모두 원본 참조) 이용해서 mapper에서 세팅한 
+		값을 controller, service에서 사용 가능하게함 -->
+
+
+	<!-- useGeneratedKeys 속성 - DB에서 내부적으로 생성된 KEY(시퀀스)를 사용할 수 있는 상태 여부 지정 -> 
+		전달 받은 파라미터 객체의 필드에 대입 가능 ** 동적 SQL ** - 프로그램 수행 중 SQL을 변경하는 기능 (마이바티스의 가장 
+		강력한 기능) <selectKey> 태그 : INSERT/UPDATE 시 사용할 키(시퀀스)를 조회해서 파라미터의 지정된 필드에 대입 
+		order 속성 : 메인 SQL이 수행되기 전/후에 selectkey가 수행되도록 지정 전 : BEFORE 후 : AFTER keyProperty 
+		속성 : selectKey 조회 결과를 저장할 파라미터의 필드 -->
+
+	<!-- 게시글 부분 (제목, 내용, 작성자, 게시판 종류) INSERT -->
+	<insert id="boardInsert" parameterType="Board"
+		useGeneratedKeys="true">
+
+		<selectKey order="BEFORE" resultType="_int"
+			keyProperty="boardNo">
 			SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL
 		</selectKey>
-	
-	
+
+
 		INSERT INTO "BOARD"
 		VALUES(
-			#{boardNo},
-			#{boardTitle},
-			#{boardContent},
-			DEFAULT, DEFAULT, DEFAULT, DEFAULT,
-			#{memberNo},
-			#{boardCode}
+		#{boardNo},
+		#{boardTitle},
+		#{boardContent},
+		DEFAULT, DEFAULT, DEFAULT, DEFAULT,
+		#{memberNo},
+		#{boardCode}
 		)
 	</insert>
-  
-  	
-  	
-	<!--  
-  		동적 SQL 중 <foreach>
-  		- Mybatis에서 제공하는 향상된 for문
-  		
-  		- 특정 SQL 구문을 반복할 때 사용
-  		
-  		- 반복 사이에 구분자(separator)를 추가할 수 있음
-  		
-  		[지원하는 속성]
-  		collection : 반복할 객체의 타입 작성(list, set, map...) **필수**
-  		
-		item : collection에서 순차적으로 꺼낸 하나의 요소를 저장하는 변수
-		index : 현재 반복 접근중인 인덱스 (0,1,2,3,4 ..)
-		
-		open : 반복 전에 출력할 sql
-		close : 반복 종료 후에 출력한 sql
-		
-		separator : 반복 사이사이 구분자
-  	-->
-  	
-  	<!-- 여러 이미지 한 번에 INSERT -->
-  	<insert id="insertUploadList">
-  		INSERT INTO "BOARD_IMG"
-  		
-  		<foreach collection="list" item="img"
-  				 open="(" close=")" separator=" UNION ALL ">
-  			SELECT 
-  				NEXT_IMG_NO(),
-				#{img.imgPath}, 
-				#{img.imgOriginalName},
-				#{img.imgRename},
-				#{img.imgOrder},
-				#{img.boardNo}
+
+
+
+	<!-- 동적 SQL 중 <foreach> - Mybatis에서 제공하는 향상된 for문 - 특정 SQL 구문을 반복할 때 사용 
+		- 반복 사이에 구분자(separator)를 추가할 수 있음 [지원하는 속성] collection : 반복할 객체의 타입 작성(list, 
+		set, map...) **필수** item : collection에서 순차적으로 꺼낸 하나의 요소를 저장하는 변수 index : 
+		현재 반복 접근중인 인덱스 (0,1,2,3,4 ..) open : 반복 전에 출력할 sql close : 반복 종료 후에 출력한 sql 
+		separator : 반복 사이사이 구분자 -->
+
+	<!-- 여러 이미지 한 번에 INSERT -->
+	<insert id="insertUploadList">
+		INSERT INTO "BOARD_IMG"
+
+		<foreach collection="list" item="img" open="(" close=")"
+			separator=" UNION ALL ">
+			SELECT
+			NEXT_IMG_NO(),
+			#{img.imgPath},
+			#{img.imgOriginalName},
+			#{img.imgRename},
+			#{img.imgOrder},
+			#{img.boardNo}
 			FROM DUAL
-  		</foreach>
-  	</insert>
-  
-  
+		</foreach>
+	</insert>
+
+
+	<!-- 게시글 삭제 -->
+	<update id="boardDelete">
+		UPDATE
+			"BOARD"
+		SET
+			BOARD_DEL_FL = 'Y'
+		WHERE
+			BOARD_NO = #{boardNo}
+		AND
+			MEMBER_NO = #{memberNo}
+	</update>
+
+
+	<!-- 게시글 부분만 수정(제목/내용) -->
+	<update id="boardUpdate">
+		UPDATE 
+			"BOARD"
+		SET
+			BOARD_TITLE = #{boardTitle},
+			BOARD_CONTENT = #{boardContent}
+		WHERE
+			BOARD_CODE = #{boardCode}
+		AND
+			BOARD_NO = #{boardNo}
+		AND
+			MEMBER_NO = #{memberNo}
+	</update>
+
+	
+	<!-- 
+		[마이바티스 #, $의 의미]
+		
+		# (PreparedStatement) 
+		- {} 내 값을 SQL에 맞는 리터럴 표기법으로 변경해서 대입
+		ex) (int) 10  ->  10  (NUMBER)
+		    (String) "apple"   ->  'apple' (CHAR)
+		
+		$ (Statement)
+		- {} 내 값을 있는 그대로 SQL에 대입 (SQL 코드로 인식)
+		 ex) (int) 10  ->  10  
+		     (String) "apple"  ->  apple
+		     
+		  *  SQL Injection이 발생 할 수 있기 때문에
+		     권장하진 않음 
+		     
+		     -> 해당 SQL은 <forEach> 태그로 변경하면 좋음
+	 -->
+	
+	<!-- 기존에 존재하던 이미지 DB에서 삭제 -->
+	<delete id="deleteImage">
+		DELETE FROM "BOARD_IMG"
+		WHERE BOARD_NO = #{boardNo}
+		AND IMG_ORDER IN(${orders})
+	</delete>
+
+
+	<!-- 이미지 1행 수정 -->
+	<update id="updateImage">
+		UPDATE "BOARD_IMG"
+		SET
+			IMG_ORIGINAL_NAME = #{imgOriginalName},
+			IMG_RENAME = #{imgRename}
+		WHERE
+			BOARD_NO = #{boardNo}
+		AND
+			IMG_ORDER = #{imgOrder}
+	</update>
+	
+	
+	<!-- 새로운 이미지 1행 삽입 -->
+	<insert id="insertImage">
+		INSERT INTO "BOARD_IMG"
+		VALUES(SEQ_IMG_NO.NEXTVAL,
+			#{imgPath},
+			#{imgOriginalName},
+			#{imgRename},
+			#{imgOrder},
+			#{boardNo} )
+	</insert>
+
+
+
+
 </mapper>
