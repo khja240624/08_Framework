@@ -54,40 +54,54 @@
 
             <!-- 게시글이 존재할 때 -->
             <th:block th:unless="${#lists.isEmpty(boardList)}">
-             
-              <tr th:each="board : ${boardList}" 
-                  th:object="${board}">
+
+              <tr th:each="board : ${boardList}" th:object="${board}">
 
                 <td th:text="*{rnum}">게시글 번호</td>
 
                 <td>
                   <!-- 썸네일 추가 예정 -->
-                  <img th:if="*{thumbnail}"
-                       th:src="*{thumbnail}" 
-                       class = "list-thumbnail">
-  
+                  <img th:if="*{thumbnail}" th:src="*{thumbnail}" class="list-thumbnail">
+
                   <!-- 상세조회 요청 주소 /board/{boardCode}/{boardNo} -->
-                  
-                  <!-- boardCode=1 -> 수정할 예정!!! -->
-                  <a th:href="@{/board/{boardCode}/{boardNo} (boardCode=${boardCode}, boardNo=*{boardNo})}" 
+
+                  <!-- 검색이 아닌 경우 -->
+                  <a th:unless="${param.key}"
+                     th:href="@{/board/{boardCode}/{boardNo} 
+                              (boardCode=${boardCode}, 
+                               boardNo=*{boardNo})}"
                      th:text="*{boardTitle}">게시글 제목</a>
+
+                  <!-- 검색인 경우 -->
+                  <a th:if="${param.key}"
+                     th:href="@{/board/{boardCode}/{boardNo} 
+                              (boardCode=${boardCode}, 
+                               boardNo=*{boardNo},
+                               key=${param.key},
+                               query=${param.query}
+                               )}"
+                     th:text="*{boardTitle}">게시글 제목</a>
+
+
+
+
 
                   <!-- 댓글 수 -->
                   <th:block th:text="|[*{commentCount}]|">댓글 수</th:block>
                 </td>
-  
+
                 <!-- 작성자 닉네임 -->
                 <td th:text="*{memberNickname}">닉네임</td>
-  
+
                 <!-- 작성일 -->
                 <td th:text="*{boardWriteDate}">2023-10-26</td>
-  
+
                 <!-- 조회수 -->
                 <td th:text="*{readCount}">0</td>
-  
+
                 <!-- 좋아요 수 -->
                 <td th:text="*{likeCount}">0</td>
-  
+
               </tr>
             </th:block>
           </tbody>
@@ -98,8 +112,7 @@
 
       <div class="btn-area">
         <!-- 로그인 상태일 때만 글쓰기 버튼 노출 -->
-        <button th:if="${session.loginMember}" 
-                id="insertBtn">글쓰기</button>
+        <button th:if="${session.loginMember}" id="insertBtn">글쓰기</button>
       </div>
 
 
@@ -117,7 +130,7 @@
           <li><a href="#">&lt;</a></li>
 
           <!-- 특정 페이지로 이동 -->
-          
+
 
           <!-- 
             #numbers.sequence(startPage, endPage)
@@ -125,15 +138,15 @@
                List를 만들어서 반환
           -->
           <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
-           
+
             <!-- 현재 보고있는 페이지 -->
-            <li th:if="${i} == *{currentPage}"> 
-              <a class="current" th:text="${i}">현재 페이지</a> 
+            <li th:if="${i} == *{currentPage}">
+              <a class="current" th:text="${i}">현재 페이지</a>
             </li>
 
             <!-- 보고있지 않은 페이지 -->
-            <li th:unless="${i} == *{currentPage}"> 
-              <a href="#" th:text="${i}">이동할 수 있는 페이지</a> 
+            <li th:unless="${i} == *{currentPage}">
+              <a href="#" th:text="${i}">이동할 수 있는 페이지</a>
             </li>
 
           </th:block>
