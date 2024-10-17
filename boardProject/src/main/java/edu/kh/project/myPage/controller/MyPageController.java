@@ -298,7 +298,6 @@ public class MyPageController {
 		// DB, Session에 저장된 프로필 이미지 정보 동기화
 		loginMember.setProfileImg(filePath);
 		
-		
 		ra.addFlashAttribute("message", message);
 		
 		return "redirect:profile"; //  /myPage/profile (GET)

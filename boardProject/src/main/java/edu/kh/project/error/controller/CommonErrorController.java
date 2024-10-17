@@ -40,6 +40,8 @@ public class CommonErrorController implements ErrorController {
 		model.addAttribute("errorMessage", errorMessage);
 		model.addAttribute("statusCode", statusCode);
 		
+		
+
 		return "error/common-error";
 	}
 	
