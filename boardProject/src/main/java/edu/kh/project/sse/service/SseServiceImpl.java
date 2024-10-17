@@ -1,5 +1,6 @@
 package edu.kh.project.sse.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -33,9 +34,12 @@ public class SseServiceImpl implements SseService{
       // 알림을 받아야하는 회원의 번호 + 안읽은 알람 개수 조회
       map = mapper.selectReceiveMember(notification.getNotificationNo());
     }
-
-  
     return map;
   }
 
+  // 로그인한 회원의 알림 목록 조회
+  @Override
+  public List<Notification> selectNotificationList(int memberNo) {
+    return mapper.selectNotificationList(memberNo);
+  }
 }

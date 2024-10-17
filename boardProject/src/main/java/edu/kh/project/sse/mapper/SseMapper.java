@@ -1,5 +1,6 @@
 package edu.kh.project.sse.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -18,5 +19,14 @@ public interface SseMapper {
    * @return map
    */
   Map<String, Object> selectReceiveMember(int notificationNo);
+
+  /**
+   * 로그인한 회원의 알림 목록 조회
+   * @param memberNo
+   * @return list
+   */
+  List<Notification> selectNotificationList(int memberNo);
   
+
+
 }

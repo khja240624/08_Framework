@@ -1,5 +1,6 @@
 package edu.kh.project.sse.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -95,5 +96,21 @@ public class SseController {
   }
 
   
+  // -------------------------------------------------
+
+  /**
+   * 로그인한 회원의 알림 목록 조회
+   * @param loginMember
+   * @return
+   */
+  @GetMapping("notification")
+  public List<Notification> selectNotificationList(
+    @SessionAttribute("loginMember") Member loginMember
+    ){
+    int memberNo = loginMember.getMemberNo();
+    return service.selectNotificationList(memberNo);
+  }
+
+
 
 }
