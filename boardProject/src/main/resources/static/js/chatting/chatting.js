@@ -63,6 +63,8 @@ const sendMessage = () => {
     `<strong>${loginMemberNickname}</strong>님이 채팅을 보냈습니다.<br>`
     +`<span class="chat-preview">${msg}</span>`;
 
+
+    
   const url = location.pathname + "?chat-no=" + selectChattingNo;
   sendNotification("chatting", url, selectTargetNo, content);
   
