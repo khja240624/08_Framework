@@ -59,7 +59,7 @@ const getAirQuality =  async (cityName) => {
     if(!response2.ok) throw new Error("공공데이터 조회 실패");
 
     const data = await response2.json();
-
+    console.log(data)
 
     // 필요한 데이터만 추출
     const item = data.response.body.items[0];
@@ -110,3 +110,16 @@ document.querySelector("#selectBtn").addEventListener("click", () => {
 document.addEventListener("DOMContentLoaded", () => {
   getAirQuality("서울");
 })
+
+//---------------------------------------------------------
+
+// Java 부분 select 변경 후 조회 클릭 시에 대한 동작
+document.querySelector("#selectBtn2")
+  .addEventListener("click", () => {
+
+  // 선택된 도시명
+  const cityName = document.querySelector("#cityName2").value;
+
+  location.href = location.pathname + "?cityName=" + cityName;
+  
+});
