@@ -199,3 +199,42 @@ const selectMemberList = () => {
 document.addEventListener("DOMContentLoaded", () => {
   selectMemberList();
 })
+
+
+
+const ajaxLogin = () => {
+  const memberEmail = document.querySelector(".ajax-login-area .inputEmail");
+  const memberPw = document.querySelector(".ajax-login-area .inputPw");
+
+  fetch("/ajaxLogin", {
+    method : "POST",
+    headers : {"Content-Type" : "application/json"},
+    body : JSON.stringify({
+      memberEmail : memberEmail.value,
+      memberPw : memberPw.value
+    })
+  })
+  .then(resp => {
+    if(resp.ok) return resp.json();
+  })
+  .then(member => { 
+    console.log(member);
+
+  })
+  .catch(err => console.error(err));
+}
+
+document.querySelector("#ajaxLoginBtn").addEventListener("click", ajaxLogin);
+
+document.querySelector("#getLoginInfo").addEventListener("click", () => {
+
+  fetch("/getLoginInfo")
+  .then(resp => {
+    if(resp.ok) return resp.json();
+  })
+  .then(member => {
+    console.log(member);
+  })
+  .catch(err => console.error(err));
+
+});
